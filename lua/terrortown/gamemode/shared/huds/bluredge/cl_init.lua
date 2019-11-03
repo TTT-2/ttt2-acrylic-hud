@@ -1,13 +1,13 @@
 local surface = surface
 
 -- Fonts
-surface.CreateAdvancedFont("BlurEdgeMSTACKImageMsg", {font = "Octin Sports RG", size = 20, weight = 700})
-surface.CreateAdvancedFont("BlurEdgeMSTACKMsg", {font = "Octin Sports RG", size = 14, weight = 700})
-surface.CreateAdvancedFont("BlurEdgeRole", {font = "Octin Sports RG", size = 30, weight = 700})
-surface.CreateAdvancedFont("BlurEdgeBar", {font = "Octin Sports RG", size = 21, weight = 1000})
-surface.CreateAdvancedFont("BlurEdgeWep", {font = "Octin Sports RG", size = 21, weight = 1000})
-surface.CreateAdvancedFont("BlurEdgeWepNum", {font = "Octin Sports RG", size = 21, weight = 700})
-surface.CreateAdvancedFont("BlurEdgeItemInfo", {font = "Octin Sports RG", size = 14, weight = 700})
+surface.CreateAdvancedFont("BlurEdgeMSTACKImageMsg", {font = "Octin Sports RG", size = 20, weight = 600})
+surface.CreateAdvancedFont("BlurEdgeMSTACKMsg", {font = "Octin Sports RG", size = 14, weight = 600})
+surface.CreateAdvancedFont("BlurEdgeRole", {font = "Octin Sports RG", size = 28, weight = 600})
+surface.CreateAdvancedFont("BlurEdgeBar", {font = "Octin Sports RG", size = 20, weight = 300})
+surface.CreateAdvancedFont("BlurEdgeWep", {font = "Octin Sports RG", size = 21, weight = 900})
+surface.CreateAdvancedFont("BlurEdgeWepNum", {font = "Octin Sports RG", size = 21, weight = 600})
+surface.CreateAdvancedFont("BlurEdgeItemInfo", {font = "Octin Sports RG", size = 14, weight = 600})
 
 local base = "scalable_hud"
 
@@ -20,12 +20,12 @@ HUD.previewImage = Material("vgui/ttt/huds/bluredge/preview.png")
 
 
 function HUD:Initialize()
-	--self:ForceElement("bluredge_playerinfo")
+	self:ForceElement("bluredge_playerinfo")
 	--self:ForceElement("bluredge_roundinfo")
 	--self:ForceElement("bluredge_teamindicator")
 	--self:ForceElement("bluredge_miniscoreboard")
 	--self:ForceElement("bluredge_wswitch")
-	--self:ForceElement("bluredge_drowning")
+	self:ForceElement("bluredge_drowning")
 	--self:ForceElement("bluredge_mstack")
 	--self:ForceElement("bluredge_sidebar")
 	--self:ForceElement("bluredge_punchometer")

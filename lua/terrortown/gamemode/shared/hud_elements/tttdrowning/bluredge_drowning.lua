@@ -30,11 +30,9 @@ if CLIENT then
 	end
 
 	function HUDELEMENT:ShouldDraw()
-		--local client = LocalPlayer()
+		local client = LocalPlayer()
 
-		--return HUDEditor.IsEditing or client.drowningProgress and client:Alive() and client.drowningProgress ~= -1
-
-		return true
+		return HUDEditor.IsEditing or client.drowningProgress and client:Alive() and client.drowningProgress ~= -1
 	end
 
 	function HUDELEMENT:PerformLayout()
