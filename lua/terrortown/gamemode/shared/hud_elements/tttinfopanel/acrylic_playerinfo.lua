@@ -73,13 +73,13 @@ if CLIENT then
 		end
 	end
 
-	function HUDELEMENT:DrawRoleText(text, x, y)
+	function HUDELEMENT:DrawRoleText(text, x, y, activeAndAlive)
 		surface.SetFont("AcrylicRole")
 
 		local role_text_width = surface.GetTextSize(string.upper(text)) * self.scale
 		local role_scale_multiplier = (self.size.w - self.row - 2 * self.padding) / role_text_width
 
-		if calive and cactive and isfunction(self.secondaryRoleInformationFunc) then
+		if activeAndAlive and isfunction(self.secondaryRoleInformationFunc) then
 			local secInfoTbl = self.secondaryRoleInformationFunc()
 
 			if secInfoTbl and secInfoTbl.text then
@@ -112,8 +112,18 @@ if CLIENT then
 
 		local rd = client:GetSubRoleData()
 
+		local c, text
+
+		if cactive then
+			c = client:GetRoleColor()
+			text = TryT(rd.name)
+		else
+			c = self.basecolor
+			text = TryT(self.roundstate_string[GAMEMODE.round_state])
+		end
+
 		-- player informations
-		if calive and cactive then
+		if calive then
 			-- precalc sizes
 			local role_x = self.pos.x
 			local role_y = self.pos.y
@@ -142,14 +152,17 @@ if CLIENT then
 			local sprint_h = self.row
 
 			-- draw role box
-			self:DrawBg(role_x, role_y, role_w, role_h, {r = rd.color.r, g = rd.color.g, b = rd.color.b, a = self.basecolor.a})
+			self:DrawBg(role_x, role_y, role_w, role_h, {r = c.r, g = c.g, b = c.b, a = self.basecolor.a})
 			self:DrawLines(role_x, role_y, role_w, role_h)
 
 			local img_size = role_h - 2 * self.gap
 
-			if rd then
+			if rd and cactive then
 				draw.FilteredShadowedTexture(role_x + self.gap, role_y + self.gap, img_size, img_size, rd.iconMaterial, 255, COLOR_WHITE, self.scale)
-				self:DrawRoleText(TryT(rd.name), role_x + role_h, role_y + 0.5 * role_h)
+			end
+
+			if rd then
+				self:DrawRoleText(text, role_x + (cactive and role_h or 2 * self.gap), role_y + 0.5 * role_h, calive and cactive)
 			end
 
 			-- icon size for all small icons
@@ -195,7 +208,15 @@ if CLIENT then
 
 			draw.FilteredShadowedTexture(sprint_x + icon_pad, sprint_y + icon_pad, icon_size, icon_size, icon_sprint, 255, COLOR_WHITE, self.scale)
 			draw.AdvancedText(string.format("%03i", client.sprintProgress * 100), "AcrylicBar", sprint_x + sprint_h, sprint_y + 0.5 * sprint_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
-		end
+		else
+			-- precalc sizes
+			local box_x = self.pos.x
+			local box_y = self.pos.y + self.size.w - self.row
+			local box_w = self.size.w
+			local box_h = self.row
 
+			self:DrawBg(box_x, box_y, box_w, box_h, self.basecolor)
+			self:DrawLines(box_x, box_y, box_w, box_h)
+		end
 	end
 end
