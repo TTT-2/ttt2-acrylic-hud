@@ -1,4 +1,4 @@
-local base = "bluredge_element"
+local base = "acrylic_element"
 
 DEFINE_BASECLASS(base)
 

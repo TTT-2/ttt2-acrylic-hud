@@ -1,4 +1,4 @@
-local base = "bluredge_element"
+local base = "acrylic_element"
 
 DEFINE_BASECLASS(base)
 
@@ -74,7 +74,7 @@ if CLIENT then
 	end
 
 	function HUDELEMENT:DrawRoleText(text, x, y)
-		surface.SetFont("BlurEdgeRole")
+		surface.SetFont("AcrylicRole")
 
 		local role_text_width = surface.GetTextSize(string.upper(text)) * self.scale
 		local role_scale_multiplier = (self.size.w - self.row - 2 * self.padding) / role_text_width
@@ -83,7 +83,7 @@ if CLIENT then
 			local secInfoTbl = self.secondaryRoleInformationFunc()
 
 			if secInfoTbl and secInfoTbl.text then
-				surface.SetFont("BlurEdgeBar")
+				surface.SetFont("AcrylicBar")
 
 				local sri_text_width = surface.GetTextSize(string.upper(secInfoTbl.text)) * self.scale
 				local sri_width = sri_text_width + self.pad * 2
@@ -94,7 +94,7 @@ if CLIENT then
 
 		role_scale_multiplier = math.Clamp(role_scale_multiplier, 0.55, 0.85) * self.scale
 
-		draw.AdvancedText(string.upper(text), "BlurEdgeRole", x, y, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, role_scale_multiplier)
+		draw.AdvancedText(text, "AcrylicRole", x, y, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, role_scale_multiplier)
 	end
 
 	local watching_icon = Material("vgui/ttt/watching_icon")
@@ -113,7 +113,7 @@ if CLIENT then
 		local rd = client:GetSubRoleData()
 
 		-- player informations
-		if calive then
+		if calive and cactive then
 			-- precalc sizes
 			local role_x = self.pos.x
 			local role_y = self.pos.y
@@ -142,13 +142,13 @@ if CLIENT then
 			local sprint_h = self.row
 
 			-- draw role box
-			self:DrawBg(role_x, role_y, role_w, role_h, self.basecolor)
+			self:DrawBg(role_x, role_y, role_w, role_h, {r = rd.color.r, g = rd.color.g, b = rd.color.b, a = self.basecolor.a})
 			self:DrawLines(role_x, role_y, role_w, role_h)
 
 			local img_size = role_h - 2 * self.gap
 
 			if rd then
-				draw.FilteredShadowedTexture(role_x + self.gap, role_y + self.gap, img_size, img_size, rd.iconMaterial, 255, rd.color, self.scale)
+				draw.FilteredShadowedTexture(role_x + self.gap, role_y + self.gap, img_size, img_size, rd.iconMaterial, 255, COLOR_WHITE, self.scale)
 				self:DrawRoleText(TryT(rd.name), role_x + role_h, role_y + 0.5 * role_h)
 			end
 
@@ -161,7 +161,7 @@ if CLIENT then
 			self:DrawLines(health_x, health_y, health_w, health_h)
 
 			draw.FilteredShadowedTexture(health_x + icon_pad, health_y + icon_pad, icon_size, icon_size, icon_health, 255, COLOR_WHITE, self.scale)
-			draw.AdvancedText(math.max(0, client:Health()) .. " / " .. math.max(0, client:GetMaxHealth()), "BlurEdgeBar", health_x + health_h, health_y + 0.5 * health_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
+			draw.AdvancedText(math.max(0, client:Health()) .. " / " .. math.max(0, client:GetMaxHealth()), "AcrylicBar", health_x + health_h, health_y + 0.5 * health_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
 
 			-- draw armor box
 			self:DrawBg(armor_x, armor_y, armor_w, armor_h, self.basecolor)
@@ -170,7 +170,7 @@ if CLIENT then
 			local icon_mat = client:ArmorIsReinforced() and icon_armor_rei or icon_armor
 
 			draw.FilteredShadowedTexture(armor_x + icon_pad, armor_y + icon_pad, icon_size, icon_size, icon_mat, 255, COLOR_WHITE, self.scale)
-			draw.AdvancedText(client:GetArmor() .. " / " .. client:GetMaxArmor(), "BlurEdgeBar", armor_x + armor_h, armor_y + 0.5 * armor_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
+			draw.AdvancedText(client:GetArmor() .. " / " .. client:GetMaxArmor(), "AcrylicBar", armor_x + armor_h, armor_y + 0.5 * armor_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
 
 			-- draw ammo box
 			self:DrawBg(ammo_x, ammo_y, ammo_w, ammo_h, self.basecolor)
@@ -187,14 +187,14 @@ if CLIENT then
 			end
 
 			draw.FilteredShadowedTexture(ammo_x + icon_pad, ammo_y + icon_pad, icon_size, icon_size, icon_ammo, 255, COLOR_WHITE, self.scale)
-			draw.AdvancedText(ammo_string, "BlurEdgeBar", ammo_x + ammo_h, ammo_y + 0.5 * ammo_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
+			draw.AdvancedText(ammo_string, "AcrylicBar", ammo_x + ammo_h, ammo_y + 0.5 * ammo_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
 
 			-- draw sprint box
 			self:DrawBg(sprint_x, sprint_y, sprint_w, sprint_h, self.basecolor)
 			self:DrawLines(sprint_x, sprint_y, sprint_w, sprint_h)
 
 			draw.FilteredShadowedTexture(sprint_x + icon_pad, sprint_y + icon_pad, icon_size, icon_size, icon_sprint, 255, COLOR_WHITE, self.scale)
-			draw.AdvancedText(string.format("%03i", client.sprintProgress * 100), "BlurEdgeBar", sprint_x + sprint_h, sprint_y + 0.5 * sprint_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
+			draw.AdvancedText(string.format("%03i", client.sprintProgress * 100), "AcrylicBar", sprint_x + sprint_h, sprint_y + 0.5 * sprint_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
 		end
 
 	end
