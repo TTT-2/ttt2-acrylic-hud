@@ -107,16 +107,22 @@ if CLIENT then
 
 	function HUDELEMENT:Draw()
 		local client = LocalPlayer()
+		local rd = client:GetSubRoleData()
+		local tgt = client:GetObserverTarget()
+
 		local calive = client:Alive() and client:IsTerror()
 		local cactive = client:IsActive()
+		local cspec = IsValid(tgt) and tgt:IsPlayer()
+		local sprint_enabled = GetGlobalBool("ttt2_sprint_enabled", true)
 
-		local rd = client:GetSubRoleData()
 
 		local c, text
 
 		if cactive then
 			c = client:GetRoleColor()
 			text = TryT(rd.name)
+		elseif cspec then
+			text = tgt:Nick()
 		else
 			c = self.basecolor
 			text = TryT(self.roundstate_string[GAMEMODE.round_state])
@@ -142,7 +148,7 @@ if CLIENT then
 
 			local ammo_x = self.pos.x
 			local ammo_y = self.pos.y + 2 * (self.row + self.gap)
-			local ammo_w = (self.size.w - self.gap) * 0.5
+			local ammo_w = sprint_enabled and ((self.size.w - self.gap) * 0.5) or self.size.w
 			local ammo_h = self.row
 
 			-- TODO dependant on GetGlobalBool("ttt2_sprint_enabled", true)
@@ -203,20 +209,30 @@ if CLIENT then
 			draw.AdvancedText(ammo_string, "AcrylicBar", ammo_x + ammo_h, ammo_y + 0.5 * ammo_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
 
 			-- draw sprint box
-			self:DrawBg(sprint_x, sprint_y, sprint_w, sprint_h, self.basecolor)
-			self:DrawLines(sprint_x, sprint_y, sprint_w, sprint_h)
+			if sprint_enabled then
+				self:DrawBg(sprint_x, sprint_y, sprint_w, sprint_h, self.basecolor)
+				self:DrawLines(sprint_x, sprint_y, sprint_w, sprint_h)
 
-			draw.FilteredShadowedTexture(sprint_x + icon_pad, sprint_y + icon_pad, icon_size, icon_size, icon_sprint, 255, COLOR_WHITE, self.scale)
-			draw.AdvancedText(string.format("%03i", client.sprintProgress * 100), "AcrylicBar", sprint_x + sprint_h, sprint_y + 0.5 * sprint_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
+				draw.FilteredShadowedTexture(sprint_x + icon_pad, sprint_y + icon_pad, icon_size, icon_size, icon_sprint, 255, COLOR_WHITE, self.scale)
+				draw.AdvancedText(string.format("%03i", client.sprintProgress * 100) .. "%", "AcrylicBar", sprint_x + sprint_h, sprint_y + 0.5 * sprint_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
+			end
 		else
 			-- precalc sizes
 			local box_x = self.pos.x
-			local box_y = self.pos.y + self.size.w - self.row
+			local box_y = self.pos.y + self.size.h - self.row
 			local box_w = self.size.w
 			local box_h = self.row
 
+			local img_size = box_h - 2 * self.gap
+
 			self:DrawBg(box_x, box_y, box_w, box_h, self.basecolor)
 			self:DrawLines(box_x, box_y, box_w, box_h)
+
+			if cspec then
+				draw.FilteredShadowedTexture(box_x + self.gap, box_y + self.gap, img_size, img_size, watching_icon, 255, COLOR_WHITE, self.scale)
+			end
+
+			draw.AdvancedText(text, "AcrylicRole", box_x + (cspec and box_h or 2 * self.gap), box_y + 0.5 * box_h, COLOR_WHITE, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, true, self.scale)
 		end
 	end
 end
