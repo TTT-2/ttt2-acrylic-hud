@@ -115,7 +115,6 @@ if CLIENT then
 		local cspec = IsValid(tgt) and tgt:IsPlayer()
 		local sprint_enabled = GetGlobalBool("ttt2_sprint_enabled", true)
 
-
 		local c, text
 
 		if cactive then
