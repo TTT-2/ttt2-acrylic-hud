@@ -86,9 +86,9 @@ if CLIENT then
 				surface.SetFont("AcrylicBar")
 
 				local sri_text_width = surface.GetTextSize(string.upper(secInfoTbl.text)) * self.scale
-				local sri_width = sri_text_width + self.pad * 2
+				local sri_width = sri_text_width + self.padding * 2
 
-				role_scale_multiplier = (self.size.w - self.row - 4 * self.pad - sri_width) / role_text_width
+				role_scale_multiplier = (self.size.w - self.row - 4 * self.padding - sri_width) / role_text_width
 			end
 		end
 

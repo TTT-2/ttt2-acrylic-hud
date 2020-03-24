@@ -36,7 +36,7 @@ function HUD:Initialize()
 end
 
 -- Voice overriding
---include("cl_voice.lua")
+include("cl_voice.lua")
 
 -- Popup overriding
---include("cl_popup.lua")
+include("cl_popup.lua")
