@@ -29,7 +29,7 @@ function HUD:Initialize()
 	--self:ForceElement("acrylic_mstack")
 	--self:ForceElement("acrylic_sidebar")
 	--self:ForceElement("acrylic_punchometer")
-	--self:ForceElement("acrylic_target")
+	self:ForceElement("acrylic_target")
 	--self:ForceElement("acrylic_pickup")
 
 	BaseClass.Initialize(self)
