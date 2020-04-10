@@ -1,8 +1,6 @@
 local blur_hud, blur_base
 
 HUD.popupPaint = function(s, w, h)
-	if not IsValid(s.ply) then return end
-
 	if not hudelements or not huds then return end
 
 	blur_hud = blur_hud or huds.GetStored("acrylic")

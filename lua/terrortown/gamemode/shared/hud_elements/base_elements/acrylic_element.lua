@@ -37,8 +37,12 @@ if CLIENT then
 		DrawHUDElementBg(x, y, w, h, color)
 	end
 
-	function HUDELEMENT:DrawLines(x, y, w, h)
+	function HUDELEMENT:DrawSimpleOutline(x, y, w, h)
 		draw.OutlinedBox(x, y, w, h, 1, self.outlineColor)
+	end
+
+	function HUDELEMENT:DrawLines(x, y, w, h)
+		self:DrawSimpleOutline(x, y, w, h)
 
 		local edgesize = 8
 		local edgewidth = 2
