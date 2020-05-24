@@ -44,7 +44,7 @@ if CLIENT then
 		hudelements.RegisterChildRelation(self.id, "acrylic_roundinfo", false)
 
 		-- resort miniscoreboard if body_found is changed
-		TTT2NET:OnUpdate("players", function(oldval, newval, reversePath)
+		ttt2net.OnUpdate("players", function(oldval, newval, reversePath)
 			if not refreshPaths[reversePath[2]] then return end
 
 			-- sort playerlist: confirmed players should be in the first position
@@ -169,7 +169,7 @@ if CLIENT then
 			self:DrawBg(tmp_x, tmp_y, self.ply_ind_size, self.ply_ind_size, {r = ply_color.r, g = ply_color.g, b = ply_color.b, a = 120})
 			self:DrawSimpleOutline(tmp_x, tmp_y, self.ply_ind_size, self.ply_ind_size)
 
-			if ply:Revived() then
+			if ply:WasRevivedAndConfirmed() and ply:IsTerror() then
 				draw.FilteredTexture(tmp_x + 3, tmp_y + 3, self.ply_ind_size -6, self.ply_ind_size -6, self.icon_revived, 180, {r = 0,g = 0,b = 0})
 			elseif ply:OnceFound() and not ply:RoleKnown() then -- draw marker on indirect confirmed bodies
 				draw.FilteredTexture(tmp_x + 3, tmp_y + 3, self.ply_ind_size -6, self.ply_ind_size -6, self.icon_in_conf, 120, {r = 0,g = 0,b = 0})
